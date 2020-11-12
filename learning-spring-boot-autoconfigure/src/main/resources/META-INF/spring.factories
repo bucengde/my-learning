@@ -1,0 +1,5 @@
+#org.springframework.context.ApplicationContextInitializer=\
+
+#org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+#com.learning.autoconfigure.aware.ContextConfiguration,\
+#com.learning.autoconfigure.datasource.MybatisPlusAutoConfiguration
