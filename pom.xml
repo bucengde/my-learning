@@ -16,6 +16,7 @@
         <module>learning-spring-boot-starter</module>
         <module>learning-spring-boot-autoconfigure</module>
         <module>learning-vps</module>
+        <module>qrcode</module>
     </modules>
 
     <properties>
@@ -70,6 +71,8 @@
         <protostuff.version>1.7.2</protostuff.version>
         <elasticsearch.version>7.6.1</elasticsearch.version>
         <jsoup.version>1.11.2</jsoup.version>
+        <google.zxing.qrcode.version>3.4.0</google.zxing.qrcode.version>
+        <qrcode-plugin.version>2.5.4</qrcode-plugin.version>
     </properties>
 
     <parent>
@@ -319,6 +322,24 @@
                 <groupId>org.jsoup</groupId>
                 <artifactId>jsoup</artifactId>
                 <version>${jsoup.version}</version>
+            </dependency>
+
+            <!-- google qr code -->
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>core</artifactId>
+                <version>${google.zxing.qrcode.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>javase</artifactId>
+                <version>${google.zxing.qrcode.version}</version>
+            </dependency>
+            <!-- google zxing qr code plus -->
+            <dependency>
+                <groupId>com.github.liuyueyi.media</groupId>
+                <artifactId>qrcode-plugin</artifactId>
+                <version>${qrcode-plugin.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

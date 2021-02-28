@@ -38,6 +38,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <!-- google开发的开源的序列化方案protocol buffer（简称protobuf）,效率高，比 json 更少占资源 -->
         <dependency>
             <groupId>io.protostuff</groupId>
             <artifactId>protostuff-core</artifactId>

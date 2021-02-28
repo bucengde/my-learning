@@ -1,6 +1,5 @@
 package com.learning.autoconfigure.aware;
 
-import com.sun.istack.internal.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

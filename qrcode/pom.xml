@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>java.com.learning</artifactId>
+        <groupId>ilearning</groupId>
+        <version>1.01</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>qrcode</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ilearning</groupId>
+            <artifactId>commons</artifactId>
+            <version>1.01</version>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>ilearning</groupId>-->
+<!--            <artifactId>learning-spring-boot-starter</artifactId>-->
+<!--            <version>2.2.1</version>-->
+<!--        </dependency>-->
+
+        <!-- google qr code -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+        </dependency>
+        <!-- google zxing qr code plus -->
+        <dependency>
+            <groupId>com.github.liuyueyi.media</groupId>
+            <artifactId>qrcode-plugin</artifactId>
+        </dependency>
+    </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.html</include>
+                    <include>**/*.js</include>
+                    <include>**/*.css</include>
+                    <include>**/*.woff2</include>
+                    <include>**/*.woff</include>
+                    <include>**/*.ttf</include>
+                    <include>**/imgs/*.jpg</include>
+                    <include>**/imgs/*.png</include>
+                    <include>**/imgs/*.gif</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>
