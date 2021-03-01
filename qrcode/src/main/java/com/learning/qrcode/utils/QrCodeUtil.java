@@ -1,7 +1,9 @@
 package com.learning.qrcode.utils;
 
+import com.github.hui.quick.plugin.base.ColorUtil;
 import com.github.hui.quick.plugin.qrcode.wrapper.QrCodeGenWrapper;
 import com.github.hui.quick.plugin.qrcode.wrapper.QrCodeOptions;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.learning.commons.exception.RuntimeServerException;
 import com.learning.qrcode.enums.QrCodeTypeEnum;
 
@@ -10,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.Optional;
 
 /**
  * @author Wang Xu
@@ -20,57 +23,6 @@ public class QrCodeUtil {
     private static final int QR_CODE_ARC_HEIGHT = 6;
     private static final int QR_CODE_WIGHT = 300;
     private static final int QR_CODE_HEIGHT = 300;
-
-    public static String generateNormal(String content, QrCodeTypeEnum qrCodeTypeEnum, InputStream bgImgInputStream) throws Exception {
-        switch (qrCodeTypeEnum) {
-            case normal:
-                return generateNormal(content);
-            case normalPreColor:
-                return generateNormalPreColor(content);
-            case normalColor2:
-                return generateNormal(content);
-            case normalColor3:
-                return generateNormal(content);
-            case normalBackground:
-                return generateNormal(content);
-            case normalStyle:
-                return generateNormal(content);
-            case normalImageFill:
-                return generateNormal(content);
-            case normalGif:
-                return generateNormal(content);
-            default:
-                throw new RuntimeServerException("QrCodeType not match ...");
-        }
-    }
-
-    public static String generateLogo(String content, QrCodeTypeEnum qrCodeTypeEnum, InputStream logoImgInputStream, InputStream bgImgInputStream) throws Exception {
-        BufferedImage logoImage = ImageIO.read(logoImgInputStream);
-        // 压缩logo，限制logo图片宽高最大为 100 * 100
-        Image compressLogoImage = doCompressImage(logoImage, Math.min(logoImage.getWidth(), 100), Math.min(logoImage.getHeight(), 100));
-
-        BufferedImage bufferedImage = toBufferedImage(compressLogoImage);
-        switch (qrCodeTypeEnum) {
-            case logo:
-                return generateLogo(content, bufferedImage);
-            case logoPreColor:
-                return generateLogoPreColor(content, bufferedImage);
-            case logoColor2:
-                return generateNormal(content);
-            case logoColor3:
-                return generateNormal(content);
-            case logoBackground:
-                return generateNormal(content);
-            case logoStyle:
-                return generateNormal(content);
-            case logoImageFill:
-                return generateNormal(content);
-            case logoGif:
-                return generateNormal(content);
-            default:
-                throw new RuntimeServerException("QrCodeType not match ...");
-        }
-    }
 
     private static QrCodeGenWrapper.Builder getBasicQrCodeGenWrapperBuilder(String content) {
         return QrCodeGenWrapper.of(content).setW(QR_CODE_WIGHT).setH(QR_CODE_HEIGHT);
@@ -134,6 +86,208 @@ public class QrCodeUtil {
         g.dispose();
 
         return bimage;
+    }
+
+    public static String generateNormal(String content, QrCodeTypeEnum qrCodeTypeEnum, InputStream bgImgInputStream) throws Exception {
+        switch (qrCodeTypeEnum) {
+            case normal:
+                return generateNormal(content);
+            case normalPreColor:
+                return generateNormalPreColor(content);
+            case normalCoverBackground:
+                return generateNormalCoverBg(content, bgImgInputStream);
+            case normalFillBackground:
+                return generateNormalFillBg(content, bgImgInputStream);
+            case normalRenderingBackground:
+                return generateNormalRenderingBg(content, bgImgInputStream);
+            case normalStyle:
+                return generateNormalStyle(content);
+            case normalImageFill:
+                return generateNormalImageFill(content, bgImgInputStream);
+            case normalGif:
+                return generateNormal(content);
+            default:
+                throw new RuntimeServerException("QrCodeType not match ...");
+        }
+    }
+
+    public static String generateLogo(String content, QrCodeTypeEnum qrCodeTypeEnum, InputStream logoImgInputStream, InputStream bgImgInputStream) throws Exception {
+        BufferedImage logoImage = ImageIO.read(logoImgInputStream);
+        // 压缩logo，限制logo图片宽高最大为 100 * 100
+        Image compressLogoImage = doCompressImage(logoImage, Math.min(logoImage.getWidth(), 100), Math.min(logoImage.getHeight(), 100));
+
+        BufferedImage bufferedImage = toBufferedImage(compressLogoImage);
+        switch (qrCodeTypeEnum) {
+            case logo:
+                return generateLogo(content, bufferedImage);
+            case logoPreColor:
+                return generateLogoPreColor(content, bufferedImage);
+            case logoCoverBackground:
+                return generateLogoCoverBg(content, bufferedImage, bgImgInputStream);
+            case logoFillBackground:
+                return logoFillBackground(content, bufferedImage, bgImgInputStream);
+            case logoRenderingBackground:
+                return generateLogoRenderingBg(content, bufferedImage, bgImgInputStream);
+            case logoStyle:
+                return generateLogoStyle(content, bufferedImage);
+            case logoImageFill:
+                return generateNormal(content);
+            case logoGif:
+                return generateNormal(content);
+            default:
+                throw new RuntimeServerException("QrCodeType not match ...");
+        }
+    }
+
+    /**
+     * 普通-图片填充二维码生成
+     */
+    private static String generateNormalImageFill(String content, InputStream bgImgInputStream) throws Exception {
+        return getBasicQrCodeGenWrapperBuilder(content)
+                .setErrorCorrection(ErrorCorrectionLevel.H)
+                // 因为素材为png透明图，我们这里设置二维码的背景为透明，输出更加优雅
+                .setDrawBgColor(ColorUtil.OPACITY)
+                .setDetectImg("jihe/PDP.png")
+                .setDrawStyle(QrCodeOptions.DrawStyle.IMAGE)
+                .addImg(1, 1, "jihe/a.png")
+                .addImg(3, 1, "jihe/b.png")
+                .addImg(1, 3, "jihe/c.png")
+                .addImg(3, 2, "jihe/e.png")
+                .addImg(2, 3, "jihe/f.png")
+                .addImg(2, 2, "jihe/g.png")
+                .addImg(3, 4, "jihe/h.png")
+                .setPicType("png")
+                .asString();
+
+    }
+
+    /**
+     * logo-几何形状二维码生成(常见的几何形式支持，如矩形 RECT，圆点 CIRCLE，三角 TRIANGLE，钻石 DIAMOND，六边形 SEXANGLE，八边形 OCTAGON)
+     *
+     */
+    private static String generateLogoStyle(String content, BufferedImage logoImg) throws Exception {
+        return getBasicQrCodeGenWrapperBuilder(content)
+                .setDrawEnableScale(true)
+                .setDrawStyle(QrCodeOptions.DrawStyle.DIAMOND)
+                .setLogo(logoImg)
+                .setLogoRate(4)
+                .setLogoStyle(QrCodeOptions.LogoStyle.ROUND)
+                .setLogoOpacity(0.8f)
+                .asString();
+    }
+
+    /**
+     * 普通-几何形状二维码生成(常见的几何形式支持，如矩形 RECT，圆点 CIRCLE，三角 TRIANGLE，钻石 DIAMOND，六边形 SEXANGLE，八边形 OCTAGON)
+     *
+     */
+    private static String generateNormalStyle(String content) throws Exception {
+        return getBasicQrCodeGenWrapperBuilder(content)
+                // 支持将临近相同的合并成一个大的圆点
+                .setDrawEnableScale(true)
+                .setDrawStyle(QrCodeOptions.DrawStyle.DIAMOND)
+                .asString();
+    }
+
+    /**
+     * logo-背景渲染二维码生成
+     */
+    private static String generateLogoRenderingBg(String content, BufferedImage logoImg, InputStream bgImgInputStream) throws Exception {
+        Optional.ofNullable(bgImgInputStream).orElseThrow(() -> new RuntimeServerException("background file not is null"));
+        return getBasicQrCodeGenWrapperBuilder(content)
+                .setBgStyle(QrCodeOptions.BgImgStyle.PENETRATE)
+                .setBgW(QR_CODE_WIGHT)
+                .setBgH(QR_CODE_HEIGHT)
+                .setBgImg(bgImgInputStream)
+                .setLogo(logoImg)
+                .setLogoRate(4)
+                .setLogoStyle(QrCodeOptions.LogoStyle.ROUND)
+                .setLogoOpacity(0.8f)
+                .asString();
+    }
+
+    /**
+     * 普通-背景渲染二维码生成
+     */
+    private static String generateNormalRenderingBg(String content, InputStream bgImgInputStream) throws Exception {
+        Optional.ofNullable(bgImgInputStream).orElseThrow(() -> new RuntimeServerException("background file not is null"));
+        return getBasicQrCodeGenWrapperBuilder(content)
+                .setBgStyle(QrCodeOptions.BgImgStyle.PENETRATE)
+                .setBgW(QR_CODE_WIGHT)
+                .setBgH(QR_CODE_HEIGHT)
+                .setBgImg(bgImgInputStream)
+                .asString();
+    }
+
+    /**
+     * logo-填充背景二维码生成
+     */
+    private static String logoFillBackground(String content, BufferedImage logoImg, InputStream bgImgInputStream) throws Exception {
+        Optional.ofNullable(bgImgInputStream).orElseThrow(() -> new RuntimeServerException("background file not is null"));
+        return getBasicQrCodeGenWrapperBuilder(content)
+                // 指定为背景图填充模式
+                .setBgStyle(QrCodeOptions.BgImgStyle.FILL)
+                .setBgW(500)
+                .setBgH(500)
+                // 二维码回执开始坐标
+                .setBgStartX((500 - QR_CODE_WIGHT) / 2)
+                .setBgStartY((500 - QR_CODE_HEIGHT) / 2)
+                .setBgImg(bgImgInputStream)
+                .setPadding(0)
+//                .setDrawBgColor(Color.BLUE)
+                .setDrawBgColor(0xfff7f7f7)
+                .setLogo(logoImg)
+                .setLogoRate(4)
+                .setLogoStyle(QrCodeOptions.LogoStyle.ROUND)
+                .setLogoOpacity(0.8f)
+                .asString();
+    }
+
+    /**
+     * 普通-填充背景二维码生成
+     */
+    private static String generateNormalFillBg(String content, InputStream bgImgInputStream) throws Exception {
+        Optional.ofNullable(bgImgInputStream).orElseThrow(() -> new RuntimeServerException("background file not is null"));
+        return getBasicQrCodeGenWrapperBuilder(content)
+                // 指定为背景图填充模式
+                .setBgStyle(QrCodeOptions.BgImgStyle.FILL)
+                .setBgW(500)
+                .setBgH(500)
+                // 二维码回执开始坐标
+                .setBgStartX((500 - QR_CODE_WIGHT) / 2)
+                .setBgStartY((500 - QR_CODE_HEIGHT) / 2)
+                .setBgImg(bgImgInputStream)
+                .setPadding(0)
+                .setDrawBgColor(0xfff7f7f7)
+                .asString();
+    }
+
+    /**
+     * logo-全覆盖背景二维码生成
+     */
+    private static String generateLogoCoverBg(String content, BufferedImage logoImg, InputStream bgImgInputStream) throws Exception {
+        Optional.ofNullable(bgImgInputStream).orElseThrow(() -> new RuntimeServerException("background file not is null"));
+        return getBasicQrCodeGenWrapperBuilder(content)
+                .setBgW(QR_CODE_WIGHT)
+                .setBgH(QR_CODE_HEIGHT)
+                .setBgImg(bgImgInputStream)
+                .setBgOpacity(0.5f)
+                .setLogo(logoImg)
+                .setLogoRate(7)
+                .setLogoStyle(QrCodeOptions.LogoStyle.ROUND)
+                .asString();
+    }
+
+    /**
+     * 普通-全覆盖背景二维码生成
+     */
+    private static String generateNormalCoverBg(String content, InputStream bgImgInputStream) throws Exception {
+        Optional.ofNullable(bgImgInputStream).orElseThrow(() -> new RuntimeServerException("background file not is null"));
+        return getBasicQrCodeGenWrapperBuilder(content)
+                .setBgW(QR_CODE_WIGHT)
+                .setBgH(QR_CODE_HEIGHT)
+                .setBgImg(bgImgInputStream)
+                .setBgOpacity(0.5f)
+                .asString();
     }
 
     /**
