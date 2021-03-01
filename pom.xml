@@ -16,6 +16,7 @@
         <module>learning-spring-boot-starter</module>
         <module>learning-spring-boot-autoconfigure</module>
         <module>learning-vps</module>
+        <module>job-exec</module>
     </modules>
 
     <properties>
@@ -67,6 +68,7 @@
         <protostuff.version>1.7.2</protostuff.version>
         <elasticsearch.version>7.6.1</elasticsearch.version>
         <jsoup.version>1.11.2</jsoup.version>
+        <xxl-job-core.version>2.2.0</xxl-job-core.version>
     </properties>
 
     <parent>
@@ -316,6 +318,11 @@
                 <groupId>org.jsoup</groupId>
                 <artifactId>jsoup</artifactId>
                 <version>${jsoup.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xuxueli</groupId>
+                <artifactId>xxl-job-core</artifactId>
+                <version>${xxl-job-core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

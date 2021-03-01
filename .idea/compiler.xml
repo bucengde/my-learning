@@ -13,6 +13,7 @@
         <module name="springcloud" />
         <module name="learning-spring-boot-starter" />
         <module name="learning-vps" />
+        <module name="job-exec" />
         <module name="elasticsearch" />
       </profile>
     </annotationProcessing>
@@ -21,6 +22,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="commons" options="-parameters" />
       <module name="elasticsearch" options="-parameters" />
+      <module name="job-exec" options="-parameters" />
       <module name="learning-spring-boot-autoconfigure" options="-parameters" />
       <module name="learning-spring-boot-starter" options="-parameters" />
       <module name="learning-vps" options="-parameters" />
