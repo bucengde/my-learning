@@ -144,6 +144,16 @@ public class QrCodeUtil {
      */
     private static String generateNormalImageFill(String content, InputStream bgImgInputStream) throws Exception {
         return getBasicQrCodeGenWrapperBuilder(content)
+                // 前置爱心图
+//                .setW(500)
+//                .setH(500)
+//                // 二维码绘制在前置图上的坐标
+//                .setDrawPreColor(Color.RED)
+//                .setFtImg("https://cdn.pixabay.com/photo/2017/06/14/12/58/heart-2402086_960_720.png")
+//                .setFtStartX(110)
+//                .setFtStartY(120)
+
+                // 填充图片
                 .setErrorCorrection(ErrorCorrectionLevel.H)
                 // 因为素材为png透明图，我们这里设置二维码的背景为透明，输出更加优雅
                 .setDrawBgColor(ColorUtil.OPACITY)
