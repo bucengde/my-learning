@@ -1,6 +1,0 @@
-my:
-  auto:
-    mybatis-plus:
-      url: jdbc:mysql://localhost:3306/learning?useUnicode=true&autoReconnect=true
-      username: wangxu
-      password: wangxu

@@ -67,4 +67,5 @@ public class InitOpListener implements ApplicationContextAware, ApplicationListe
         SmsHelper.ACC_INFO.put(SmsTypeEnum.NFTS, smsAccountDataBy9527);
     }
 
+    
 }

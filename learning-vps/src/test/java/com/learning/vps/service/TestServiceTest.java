@@ -7,7 +7,9 @@ import com.learning.commons.bean.request.UnionResponse;
 import com.learning.commons.exception.RuntimeServerException;
 import com.learning.commons.utils.ProtoStuffUtil;
 import com.learning.vps.VpsAppStarter;
+import com.learning.vps.bean.sms.db.SmsTemplateInfo;
 import com.learning.vps.cache.RedisCacheServer;
+import com.learning.vps.mapper.SmsTemplateMapper;
 import com.learning.vps.service.media.sms.SmsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +18,7 @@ import org.junit.Before;
 import org.junit.After;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -32,12 +35,15 @@ import java.util.UUID;
 @Slf4j
 @SpringBootTest(classes={VpsAppStarter.class})
 @RunWith(SpringRunner.class)
+@ActiveProfiles("local")
 public class TestServiceTest {
 
     @Resource
     private RedisCacheServer redisCacheServer;
     @Resource
     private SmsService smsService;
+    @Resource
+    private SmsTemplateMapper smsTemplateMapper;
 
     @Test
     public void testSendSms() {
@@ -77,6 +83,13 @@ public class TestServiceTest {
         redisCacheServer.transferDb(8);
         stringCacheServer.stringSetString("transfer_db_test3", "77777777777777777");
 
+
+    }
+
+    @Test
+    public void testVsCodeDubuger() {
+        SmsTemplateInfo templateInfo = smsTemplateMapper.selectById(1);
+        System.out.println(templateInfo.toString());
 
     }
 

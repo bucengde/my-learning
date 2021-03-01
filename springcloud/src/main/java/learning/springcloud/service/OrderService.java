@@ -10,12 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
 /**
  * @author Wang Xu
  * @date 2020/10/27
  */
 @Service
-public class OrderService {
+public class OrderService extends ServiceImpl<OrderInfoMapper, OrderInfo> {
     @Resource
     private OrderInfoMapper orderInfoMapper;
     @Resource

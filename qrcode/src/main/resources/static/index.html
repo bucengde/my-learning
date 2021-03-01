@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>二维码生成测试页</title>
+    <script type="text/javascript" src="./jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        <a href = "javascript:void(0)" onclick="uploadImage()">上传图片</a>
+        <input id ="imageFileUpload" type="file" style="top:20%;" />
+    </div>
+    <hr/>
+    <div>
+        <input id = "to_link" type = "text" placeholder = "输入跳转链接" style = "vertical-align:top;width:400px;" />
+        <ul>
+            <li><input id = "normal" type = "button" value = "普通二维码生成" onclick = "upload(1)" /></li>
+            <li><input id = "logo" type = "button" value = "logo二维码生成" onclick = "upload(2)" /></li>
+            <li><input id = "color" type = "button" value = "颜色二维码生成" onclick = "upload(3)" /></li>
+            <li><input id = "background" type = "button" value = "背景二维码生成" onclick = "upload(4)" /></li>
+            <li><input id = "style" type = "button" value = "特殊形状二维码生成" onclick = "upload(5)" /></li>
+            <li><input id = "imageFill" type = "button" value = "图片填充二维码生成" onclick = "upload(6)" /></li>
+            <li><input id = "gif" type = "button" value = "gif二维码生成" onclick = "upload(7)" /></li>
+        </ul>
+        <img id = "pp" src = "" width = "200px" height = "200px" style = "vertical-align:middle;"/>
+    </div>
+
+    <hr/>
+    <div>
+        <a href = "javascript:void(0)" onclick="uploadLogoImage()">上传logo</a>
+        <input id ="logoImageUpload" type="file" />
+        <a href = "javascript:void(0)" onclick="uploadBgImage()">上传背景图</a>
+        <input id ="bgImageUpload" type="file" />
+        <input id = "content" type = "text" placeholder = "输入跳转链接" style = "vertical-align:top;width:400px;" /><br/>
+        <img id = "qr_pp" src = "" width = "200px\" height = "200px" style = "vertical-align:middle;"/>
+        <ul>
+            <li><input id = "qr_normal" type = "button" value = "普通二维码生成" onclick = "upload2(1)" /></li>
+            <li><input id = "qr_normal_pre_color" type = "button" value = "普通-前景颜色二维码生成" onclick = "upload2(2)" /></li>
+            <li><input id = "qr_normal_color2" type = "button" value = "普通-颜色二维码生成2" onclick = "upload2(3)" /></li>
+            <li><input id = "qr_normal_color3" type = "button" value = "普通-颜色二维码生成3" onclick = "upload2(4)" /></li>
+            <li><input id = "qr_normal_background" type = "button" value = "普通-背景二维码生成" onclick = "upload2(5)" /></li>
+            <li><input id = "qr_normal_style" type = "button" value = "普通-特殊形状二维码生成" onclick = "upload2(6)" /></li>
+            <li><input id = "qr_normal_image_fill" type = "button" value = "普通-图片填充二维码生成" onclick = "upload2(7)" /></li>
+            <li><input id = "qr_normal_gif" type = "button" value = "普通-gif二维码生成" onclick = "upload2(8)" /></li>
+
+            <li><input id = "qr_logo" type = "button" value = "logo二维码生成" onclick = "upload2(9)" /></li>
+            <li><input id = "qr_logo_pre_color" type = "button" value = "logo-前景颜色二维码生成" onclick = "upload2(10)" /></li>
+            <li><input id = "qr_logo_color2" type = "button" value = "logo-颜色二维码生成2" onclick = "upload2(11)" /></li>
+            <li><input id = "qr_logo_color3" type = "button" value = "logo-颜色二维码生成3" onclick = "upload2(12)" /></li>
+            <li><input id = "qr_logo_background" type = "button" value = "logo-背景二维码生成" onclick = "upload2(13)" /></li>
+            <li><input id = "qr_logo_style" type = "button" value = "logo-特殊形状二维码生成" onclick = "upload2(14)" /></li>
+            <li><input id = "qr_logo_image_fill" type = "button" value = "logo-图片填充二维码生成" onclick = "upload2(15)" /></li>
+            <li><input id = "qr_logo_gif" type = "button" value = "logo-gif二维码生成" onclick = "upload2(16)" /></li>
+        </ul>
+    </div>
+
+
+</body>
+
+<script>
+    function uploadImage() {
+        $("#imageFileUpload").click();
+    }
+
+    function upload(type) {
+        var formData = new FormData();
+        formData.append('file', document.getElementById('imageFileUpload').files[0]);
+        formData.append('toLink', document.getElementById('to_link').value);
+        formData.append('type', type);
+
+        $.ajax({
+            url: "http://localhost:11101/qrCode/v1/zxing/generate",
+            type: "post",
+            data: formData,
+            timeout: 5000,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $("#pp").attr("src", "data:image/jpeg;base64," + data);
+            },
+            error: function (data) {
+                alert("上传失败!");
+            }
+        })
+
+    }
+
+
+    function uploadLogoImage() {
+        $("#logoImageUpload").click();
+    }
+
+    function uploadBgImage() {
+        $("#bgImageUpload").click();
+    }
+
+    function upload2(type) {
+        var formData = new FormData();
+        formData.append('logo', document.getElementById('logoImageUpload').files[0]);
+        formData.append('bg', document.getElementById('bgImageUpload').files[0]);
+        formData.append('content', document.getElementById('content').value);
+        formData.append('type', type);
+
+        $.ajax({
+            url: "http://localhost:11101/qrCode/v1/qrCode/generate",
+            type: "post",
+            data: formData,
+            timeout: 5000,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $("#qr_pp").attr("src", "data:image/jpeg;base64," + data);
+            },
+            error: function (data) {
+                alert("上传失败!");
+            }
+        })
+
+    }
+</script>
+</html>
