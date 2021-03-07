@@ -20,7 +20,9 @@ public enum QrCodeTypeEnum {
     normalRenderingBackground(5, "普通-背景渲染二维码生成"),
     normalStyle(6, "普通-特殊形状二维码生成"),
     normalImageFill(7, "普通-图片填充二维码生成"),
-    normalGif(8, "普通-gif二维码生成"),
+    normalGifCoverBackground(8, "普通-gif全覆盖二维码生成"),
+    normalGifFillBackground(17, "普通-gif填充二维码生成"),
+    normalGifRenderingBackground(18, "普通-gif渲染二维码生成"),
 
     logo(9, "logo二维码生成"),
     logoPreColor(10, "logo-前景颜色二维码生成"),
@@ -29,7 +31,9 @@ public enum QrCodeTypeEnum {
     logoRenderingBackground(13, "logo-背景渲染二维码生成"),
     logoStyle(14, "logo-特殊形状二维码生成"),
     logoImageFill(15, "logo-图片填充二维码生成"),
-    logoGif(16, "logo-gif二维码生成"),
+    logoGifCoverBackground(16, "logo-gif全覆盖二维码生成"),
+    logoGifFillBackground(19, "logo-gif填充二维码生成"),
+    logoGifRenderingBackground(20, "logo-gif渲染二维码生成"),
 
     ;
 
@@ -49,7 +53,9 @@ public enum QrCodeTypeEnum {
         objects.add(logoRenderingBackground);
         objects.add(logoStyle);
         objects.add(logoImageFill);
-        objects.add(logoGif);
+        objects.add(logoGifCoverBackground);
+        objects.add(logoGifFillBackground);
+        objects.add(logoGifRenderingBackground);
         return objects;
     }
 

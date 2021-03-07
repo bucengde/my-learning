@@ -40,15 +40,16 @@ public class QrCodeController {
     @PostMapping("/qrCode/generate")
     public String generateByQrCode(@RequestParam(value = "logo", required = false) MultipartFile logo,
                                    @RequestParam(value = "bg", required = false) MultipartFile bg,
-                                 @RequestParam("content") String content,
-                                 @RequestParam("type") Integer type) throws Exception {
+                                   @RequestParam("content") String content,
+                                   @RequestParam("type") Integer type,
+                                   @RequestParam("bgOpacity") Float bgOpacity) throws Exception {
 
-        log.info("##################### logo.name:{}, bg.size:{}, toLike:{}, type:{}", Objects.isNull(logo) ? null : logo.getName(), Objects.isNull(bg) ? null : bg.getSize(), content, type);
+        log.info("##################### logo.name:{}, bg.size:{}, toLike:{}, type:{}, bgOpacity:{}", Objects.isNull(logo) ? null : logo.getName(), Objects.isNull(bg) ? null : bg.getSize(), content, type, bgOpacity);
 
         if (QrCodeTypeEnum.isLogoType(type)) {
             Optional.ofNullable(logo).orElseThrow(() -> new RuntimeServerException("logo file not is null"));
             return QrCodeUtil.generateLogo(content, QrCodeTypeEnum.getByType(type), logo.getInputStream(), Objects.isNull(bg) ? null : bg.getInputStream());
         }
-        return QrCodeUtil.generateNormal(content, QrCodeTypeEnum.getByType(type), Objects.isNull(bg) ? null : bg.getInputStream());
+        return QrCodeUtil.generateNormal(content, QrCodeTypeEnum.getByType(type), Objects.isNull(bg) ? null : bg.getInputStream(), bgOpacity);
     }
 }
