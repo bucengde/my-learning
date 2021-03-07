@@ -22,7 +22,7 @@
             <li><input id = "imageFill" type = "button" value = "图片填充二维码生成" onclick = "upload(6)" /></li>
             <li><input id = "gif" type = "button" value = "gif二维码生成" onclick = "upload(7)" /></li>
         </ul>
-        <img id = "pp" src = "" width = "200px" height = "200px" style = "vertical-align:middle;"/>
+        <img id = "pp" src = "" width = "300px" height = "300px" style = "vertical-align:middle;"/>
     </div>
 
     <hr/>
@@ -32,7 +32,7 @@
         <a href = "javascript:void(0)" onclick="uploadBgImage()">上传背景图</a>
         <input id ="bgImageUpload" type="file" />
         <input id = "content" type = "text" placeholder = "输入跳转链接" style = "vertical-align:top;width:400px;" /><br/>
-        <img id = "qr_pp" src = "" width = "200px\" height = "200px" style = "vertical-align:middle;"/>
+        <img id = "qr_pp" src = "" width = "300px" height = "300px" style = "vertical-align:middle;"/>
         <ul>
             <li><input id = "qr_normal" type = "button" value = "普通二维码生成" onclick = "upload2(1)" /></li>
             <li><input id = "qr_normal_pre_color" type = "button" value = "普通-前景颜色二维码生成" onclick = "upload2(2)" /></li>
@@ -58,6 +58,11 @@
             <li><input id = "qr_logo_gif_cover_bg" type = "button" value = "logo-gif背景全覆盖二维码生成" onclick = "upload2(16)" /></li>
             <li><input id = "qr_logo_gif_fill_bg" type = "button" value = "logo-gif背景填充二维码生成" onclick = "upload2(19)" /></li>
             <li><input id = "qr_logo_gif_rendering_bg" type = "button" value = "logo-gif背景渲染二维码生成" onclick = "upload2(20)" /></li>
+
+            <li>
+                <input id = "qr_logo_pre_red_heart" type = "button" value = "logo-红心前景图二维码生成" onclick="upload2(21)" /><br/>
+                <input id = "red_heart_bg_opacity" type = "text" placeholder = "请输入透明度0~1" />
+            </li>
         </ul>
     </div>
 
@@ -107,7 +112,8 @@
         formData.append('bg', document.getElementById('bgImageUpload').files[0]);
         formData.append('content', document.getElementById('content').value);
         formData.append('type', type);
-        formData.append('bgOpacity', document.getElementById('gif_rendering_bg_opacity').value);
+        var o = document.getElementById('gif_rendering_bg_opacity').value;
+        formData.append('bgOpacity', o !== '' ? o : document.getElementById('red_heart_bg_opacity').value);
 
         $.ajax({
             url: "http://localhost:11101/qrCode/v1/qrCode/generate",

@@ -5,6 +5,7 @@ import com.github.hui.quick.plugin.qrcode.wrapper.QrCodeGenWrapper;
 import com.github.hui.quick.plugin.qrcode.wrapper.QrCodeOptions;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.learning.commons.exception.RuntimeServerException;
+import com.learning.qrcode.bean.IQrCodeGenWrapper;
 import com.learning.qrcode.enums.QrCodeTypeEnum;
 
 import javax.imageio.ImageIO;
@@ -12,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -19,13 +21,15 @@ import java.util.Optional;
  * @date 2021/2/28
  */
 public class QrCodeUtil {
-    private static final int QR_CODE_ARC_WIGHT = 6;
-    private static final int QR_CODE_ARC_HEIGHT = 6;
     private static final int QR_CODE_WIGHT = 300;
     private static final int QR_CODE_HEIGHT = 300;
 
     private static QrCodeGenWrapper.Builder getBasicQrCodeGenWrapperBuilder(String content) {
         return QrCodeGenWrapper.of(content).setW(QR_CODE_WIGHT).setH(QR_CODE_HEIGHT);
+    }
+
+    private static IQrCodeGenWrapper.IBuilder getBasicIQrCodeGenWrapperBuilder(String content) {
+        return IQrCodeGenWrapper.ofForMe(content).setW(QR_CODE_WIGHT).setH(QR_CODE_HEIGHT);
     }
 
     private static Image doCompressImage(BufferedImage image, int compressWidth, int compressHeight) {
@@ -115,7 +119,7 @@ public class QrCodeUtil {
         }
     }
 
-    public static String generateLogo(String content, QrCodeTypeEnum qrCodeTypeEnum, InputStream logoImgInputStream, InputStream bgImgInputStream) throws Exception {
+    public static String generateLogo(String content, QrCodeTypeEnum qrCodeTypeEnum, InputStream logoImgInputStream, InputStream bgImgInputStream, Float bgOpacity) throws Exception {
         BufferedImage logoImage = ImageIO.read(logoImgInputStream);
         // 压缩logo，限制logo图片宽高最大为 100 * 100
         Image compressLogoImage = doCompressImage(logoImage, Math.min(logoImage.getWidth(), 100), Math.min(logoImage.getHeight(), 100));
@@ -142,9 +146,38 @@ public class QrCodeUtil {
                 return generateLogoGifFillBg(content, bufferedImage, bgImgInputStream);
             case logoGifRenderingBackground:
                 return generateLogoGifRenderingBg(content, bufferedImage, bgImgInputStream);
+            case logoRedHeartBackground:
+                return generateLogoRedHeartBg(content, bufferedImage, bgImgInputStream, bgOpacity);
             default:
                 throw new RuntimeServerException("QrCodeType not match ...");
         }
+    }
+
+    /**
+     * logo-前景红心二维码生成
+     */
+    private static String generateLogoRedHeartBg(String content, BufferedImage logoImage, InputStream bgImgInputStream, Float bgOpacity) throws Exception {
+        Optional.ofNullable(bgImgInputStream).orElseThrow(() -> new RuntimeServerException("background file not is null"));
+        return getBasicIQrCodeGenWrapperBuilder(content)
+                // 前置爱心图
+                .setFtImg("http://qpi5qkd0z.hd-bkt.clouddn.com/aq6qg-9o488.png")
+                .setDrawPreColor(Color.RED)
+                .setW(479)
+                .setH(479)
+                // 二维码绘制在前置图上的坐标
+                .setFtW(QR_CODE_WIGHT + 420)
+                .setFtH(QR_CODE_HEIGHT + 420)
+                .setFtStartX(110)
+                .setFtStartY(133)
+                // bg
+                .setBgImg(bgImgInputStream)
+                .setBgOpacity(Objects.nonNull(bgOpacity) ? bgOpacity : 1)
+                // logo
+                .setLogoStyle(QrCodeOptions.LogoStyle.ROUND)
+                .setLogoRate(7)
+                .setLogo(logoImage)
+                .asString();
+
     }
 
     /**
@@ -173,7 +206,7 @@ public class QrCodeUtil {
                 .setBgW(QR_CODE_WIGHT)
                 .setBgH(QR_CODE_HEIGHT)
                 .setBgImg(bgImgInputStream)
-                .setBgOpacity(bgOpacity)
+                .setBgOpacity(Objects.nonNull(bgOpacity) ? bgOpacity : 1)
                 .asString();
     }
 
@@ -284,15 +317,6 @@ public class QrCodeUtil {
      */
     private static String generateNormalImageFill(String content, InputStream bgImgInputStream) throws Exception {
         return getBasicQrCodeGenWrapperBuilder(content)
-                // 前置爱心图
-//                .setW(500)
-//                .setH(500)
-//                // 二维码绘制在前置图上的坐标
-//                .setDrawPreColor(Color.RED)
-//                .setFtImg("http://qpi5qkd0z.hd-bkt.clouddn.com/heart.webp")
-//                .setFtStartX(110)
-//                .setFtStartY(120)
-
                 // 填充图片
                 .setErrorCorrection(ErrorCorrectionLevel.H)
                 // 因为素材为png透明图，我们这里设置二维码的背景为透明，输出更加优雅
@@ -497,12 +521,5 @@ public class QrCodeUtil {
     private static String generateNormal(String content) throws Exception {
         return getBasicQrCodeGenWrapperBuilder(content).asString();
     }
-
-    /**
-     * 图片填充二维码生成
-     */
-    /**
-     * 带有背景图的二维码生成
-     */
 
 }

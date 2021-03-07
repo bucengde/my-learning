@@ -34,6 +34,7 @@ public enum QrCodeTypeEnum {
     logoGifCoverBackground(16, "logo-gif全覆盖二维码生成"),
     logoGifFillBackground(19, "logo-gif填充二维码生成"),
     logoGifRenderingBackground(20, "logo-gif渲染二维码生成"),
+    logoRedHeartBackground(21, "logo-前景红心二维码生成"),
 
     ;
 
@@ -56,6 +57,7 @@ public enum QrCodeTypeEnum {
         objects.add(logoGifCoverBackground);
         objects.add(logoGifFillBackground);
         objects.add(logoGifRenderingBackground);
+        objects.add(logoRedHeartBackground);
         return objects;
     }
 

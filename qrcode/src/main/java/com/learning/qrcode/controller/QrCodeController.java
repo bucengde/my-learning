@@ -48,7 +48,7 @@ public class QrCodeController {
 
         if (QrCodeTypeEnum.isLogoType(type)) {
             Optional.ofNullable(logo).orElseThrow(() -> new RuntimeServerException("logo file not is null"));
-            return QrCodeUtil.generateLogo(content, QrCodeTypeEnum.getByType(type), logo.getInputStream(), Objects.isNull(bg) ? null : bg.getInputStream());
+            return QrCodeUtil.generateLogo(content, QrCodeTypeEnum.getByType(type), logo.getInputStream(), Objects.isNull(bg) ? null : bg.getInputStream(), bgOpacity);
         }
         return QrCodeUtil.generateNormal(content, QrCodeTypeEnum.getByType(type), Objects.isNull(bg) ? null : bg.getInputStream(), bgOpacity);
     }
