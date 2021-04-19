@@ -347,6 +347,7 @@
                 <artifactId>qrcode-plugin</artifactId>
                 <version>${qrcode-plugin.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
